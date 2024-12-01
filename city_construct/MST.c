@@ -85,10 +85,10 @@ int kruskalMST(Graph* graph) {
 	int sum = 0;
 
 
-	printf("최소 신장 트리의 간선(정답 출력코드, 이후 주석 처리):\n");
+	//("최소 신장 트리의 간선(정답 출력코드, 이후 주석 처리):\n");
 	for (i = 0; i < e; ++i) {
 
-		printf("마을 %c - 마을 %c: 가중치 %d억\n", result[i].src + 'A', result[i].dest + 'A', result[i].weight);
+		//printf("마을 %c - 마을 %c: 가중치 %d억\n", result[i].src + 'A', result[i].dest + 'A', result[i].weight);
 		sum += result[i].weight;
 	}
 
