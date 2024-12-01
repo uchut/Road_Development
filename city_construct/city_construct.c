@@ -106,6 +106,7 @@ void intro(void) {
 		int temp = randomMap();
 
 		printMapMST(temp);
+		
 		Sleep(1000);
 		max_stage++;
 		if (heart == 0) break;
