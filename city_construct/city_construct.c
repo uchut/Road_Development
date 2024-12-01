@@ -13,6 +13,7 @@
 
 //초기 목숨
 int heart = 3;
+int max_stage = 0;
 
 //MST알고리즘에서 쓰일 점의 개수, (존재하는)간선의 개수, (존재하지 않는 간선 포함)간선의 개수, 간선의 가중치 배열
 typedef struct {
@@ -34,9 +35,8 @@ void selectMST(MST* mst, int budget);
 int numEquals(int num[], int budget, int num2[], MST* mst);
 
 int main(void) {
-	//printMapMST(1);
 	intro();	//인트로 스토리 출력 함수
-	printf("\n도로 건설에 실패하셨습니다.");
+	printf("\n도로 건설에 실패하셨습니다...\n당신의 최고 달성 스테이지: %d", max_stage);
 	return 0;
 }
 
@@ -61,8 +61,8 @@ void intro(void) {
 	const char* text8 = "당신은 새로운 도시로 발령받아서 새로운 도시의 도로 건설을 담당하게 되었습니다.";
 	//스토리 출력
 	for (int i = 0; text1[i] != '\0'; i++) {
-		putchar(text1[i]);  // 한 글자씩 출력
-		Sleep(30);  // 30 밀리초 대기
+		putchar(text1[i]);
+		Sleep(30);
 	}
 	Sleep(200);
 	printf("."); Sleep(200); printf("."); Sleep(200); printf(". \n");
@@ -71,8 +71,8 @@ void intro(void) {
 	system("cls");
 
 	for (int i = 0; text2[i] != '\0'; i++) {
-		putchar(text2[i]);  // 한 글자씩 출력
-		Sleep(30);  // 30 밀리초 대기
+		putchar(text2[i]);
+		Sleep(30);
 	}
 	Sleep(3000);
 	printf("\n\n");
@@ -80,8 +80,8 @@ void intro(void) {
 	Sleep(1500);
 
 	for (int i = 0; text3[i] != '\0'; i++) {
-		putchar(text3[i]);  // 한 글자씩 출력
-		Sleep(30);  // 30 밀리초 대기
+		putchar(text3[i]);
+		Sleep(30);
 	}
 	Sleep(3000);
 	printf("\n");
@@ -89,30 +89,32 @@ void intro(void) {
 
 
 	for (int i = 0; text4[i] != '\0'; i++) {
-		putchar(text4[i]);  // 한 글자씩 출력
-		Sleep(30);  // 30 밀리초 대기
+		putchar(text4[i]);
+		Sleep(30);
 	}
 	Sleep(3000);
 	printf("\n");
 	for (int i = 0; text5[i] != '\0'; i++) {
-		putchar(text5[i]);  // 한 글자씩 출력
-		Sleep(30);  // 30 밀리초 대기
+		putchar(text5[i]);
+		Sleep(30);
 	}
 	Sleep(2000);
 	printf("\n");
-	//1~7 중 랜덤 숫자
+
+	// 게임 시작
 	while (1) {
 		int temp = randomMap();
 
-		//MST맵 랜덤 출력
 		printMapMST(temp);
+		
 		Sleep(1000);
+		max_stage++;
 		if (heart == 0) break;
 		system("cls");
 		printf("\n");
 		for (int i = 0; text8[i] != '\0'; i++) {
-			putchar(text8[i]);  // 한 글자씩 출력
-			Sleep(30);  // 30 밀리초 대기
+			putchar(text8[i]);
+			Sleep(30);
 		}
 		Sleep(200);
 		printf("."); Sleep(200); printf("."); Sleep(200); printf(".");
@@ -124,63 +126,47 @@ void intro(void) {
 
 void storyPrint(const char* text) {
 	for (int i = 0; text[i] != '\0'; i++) {
-		putchar(text[i]);  // 한 글자씩 출력
-		Sleep(30);  // 30 밀리초 대기
+		putchar(text[i]);
+		Sleep(30);
 	}
 }
 
-//어떤 맵을 사용할 지 결정하는 함수2
+//어떤 맵을 사용할 지 결정하는 함수 (맵 추가되면 숫자 범위 바꾸기)
 int randomMap(void) {
 	srand(time(NULL));
 	int randomNum = rand() % 3 + 1;
 	return randomNum;
 }
 
+MST* globalMST = NULL;
+
 void printMapMST(int randNum) {
-	//제 1 MST
-	MST* mst1 = (MST*)malloc(sizeof(MST));
-	mst1->node = 9;	mst1->lineSize = 11; mst1->fullLine = 36;
-	//제 1 MST 간선 유무(0은 존재하며 초기화할 예정, -1은 존재하지 않음)
-	mst1->line[0] = 0;	mst1->line[1] = 0; mst1->line[2] = 0;	mst1->line[3] = -1;	mst1->line[4] = -1; mst1->line[5] = -1; mst1->line[6] = -1; mst1->line[7] = -1;
-	mst1->line[8] = -1; mst1->line[9] = -1; mst1->line[10] = -1; mst1->line[11] = -1; mst1->line[12] = 0; mst1->line[13] = -1; mst1->line[14] = -1;
-	mst1->line[15] = -1; mst1->line[16] = 0; mst1->line[17] = -1;  mst1->line[18] = -1; mst1->line[19] = -1;  mst1->line[20] = -1;
-	mst1->line[21] = 0; mst1->line[22] = -1; mst1->line[23] = 0;  mst1->line[24] = 0;  mst1->line[25] = -1;
-	mst1->line[26] = 0; mst1->line[27] = -1; mst1->line[28] = -1;  mst1->line[29] = 0;
-	mst1->line[30] = -1; mst1->line[31] = -1; mst1->line[32] = 0;
-	mst1->line[33] = -1; mst1->line[34] = -1;
-	mst1->line[35] = -1;
+	if (globalMST != NULL) {
+		free(globalMST);
+		globalMST = NULL;
+	}
 
-	//제 2 MST
-	MST* mst2 = (MST*)malloc(sizeof(MST));
-	mst2->node = 10; mst2->lineSize = 12; mst2->fullLine = 45;
-	//제 2 MST 간선 유무(0은 존재하며 초기화할 예정, -1은 존재하지 않음)
-	mst2->line[0] = 0; mst2->line[1] = 0; mst2->line[2] = -1; mst2->line[3] = -1; mst2->line[4] = -1; mst2->line[5] = -1; mst2->line[6] = -1; mst2->line[7] = -1; mst2->line[8] = -1;
-	mst2->line[9] = -1; mst2->line[10] = 0; mst2->line[11] = -1; mst2->line[12] = -1; mst2->line[13] = -1; mst2->line[14] = -1; mst2->line[15] = -1; mst2->line[16] = -1;
-	mst2->line[17] = 0; mst2->line[18] = -1; mst2->line[19] = 0; mst2->line[20] = -1; mst2->line[21] = -1; mst2->line[22] = -1; mst2->line[23] = -1;
-	mst2->line[24] = 0; mst2->line[25] = -1; mst2->line[26] = 0; mst2->line[27] = -1; mst2->line[28] = -1; mst2->line[29] = -1;
-	mst2->line[30] = -1; mst2->line[31] = -1; mst2->line[32] = -1; mst2->line[33] = -1; mst2->line[34] = -1;
-	mst2->line[35] = 0; mst2->line[36] = -1; mst2->line[37] = -1; mst2->line[38] = -1;
-	mst2->line[39] = 0; mst2->line[40] = 0; mst2->line[41] = -1;
-	mst2->line[42] = -1; mst2->line[43] = 0;
-	mst2->line[44] = 0;
-
-	//제 3 MST
-	MST* mst3 = (MST*)malloc(sizeof(MST));
-	mst3->node = 11; mst3->lineSize = 20; mst3->fullLine = 55;
-	mst3->line[0] = 0; mst3->line[1] = 0; mst3->line[2] = -1; mst3->line[3] = -1; mst3->line[4] = -1; mst3->line[5] = -1; mst3->line[6] = -1; mst3->line[7] = -1; mst3->line[8] = -1; mst3->line[9] = -1;
-	mst3->line[10] = 0; mst3->line[11] = 0; mst3->line[12] = -1; mst3->line[13] = -1; mst3->line[14] = -1; mst3->line[15] = -1; mst3->line[16] = -1; mst3->line[17] = -1; mst3->line[18] = -1;
-	mst3->line[19] = 0; mst3->line[20] = 0; mst3->line[21] = 0; mst3->line[22] = -1; mst3->line[23] = -1; mst3->line[24] = -1; mst3->line[25] = -1; mst3->line[26] = -1;
-	mst3->line[27] = 0; mst3->line[28] = -1; mst3->line[29] = 0; mst3->line[30] = -1; mst3->line[31] = -1; mst3->line[32] = -1; mst3->line[33] = 0;
-	mst3->line[34] = 0; mst3->line[35] = -1; mst3->line[36] = -1; mst3->line[37] = -1; mst3->line[38] = 0; mst3->line[39] = 0;
-	mst3->line[40] = -1; mst3->line[41] = 0; mst3->line[42] = -1; mst3->line[43] = 0; mst3->line[44] = -1;
-	mst3->line[45] = -1; mst3->line[46] = 0; mst3->line[47] = -1; mst3->line[48] = 0;
-	mst3->line[49] = -1; mst3->line[50] = 0; mst3->line[51] = -1;
-	mst3->line[52] = -1; mst3->line[53] = 0;
-	mst3->line[54] = 0;
-
+	// 새로운 MST 할당
+	globalMST = (MST*)malloc(sizeof(MST));
+	if (globalMST == NULL) {
+		printf("Memory allocation failed!\n");
+		exit(1);
+	}
+	int current_stage = max_stage + 1;
+	printf("현재 스테이지: %d", current_stage);
 	const char* type0 = "각 도로를 지을 경우 각각의 도로를 짓는데 들어가는 금액은 다음과 같다.";
 
 	if (randNum == 1) {
+		globalMST->node = 9;	globalMST->lineSize = 11; globalMST->fullLine = 36;
+		//제 1 MST 간선 유무(0은 존재하며 초기화할 예정, -1은 존재하지 않음)
+		globalMST->line[0] = 0;	globalMST->line[1] = 0; globalMST->line[2] = 0;	globalMST->line[3] = -1;	globalMST->line[4] = -1; globalMST->line[5] = -1; globalMST->line[6] = -1; globalMST->line[7] = -1;
+		globalMST->line[8] = -1; globalMST->line[9] = -1; globalMST->line[10] = -1; globalMST->line[11] = -1; globalMST->line[12] = 0; globalMST->line[13] = -1; globalMST->line[14] = -1;
+		globalMST->line[15] = -1; globalMST->line[16] = 0; globalMST->line[17] = -1;  globalMST->line[18] = -1; globalMST->line[19] = -1;  globalMST->line[20] = -1;
+		globalMST->line[21] = 0; globalMST->line[22] = -1; globalMST->line[23] = 0;  globalMST->line[24] = 0;  globalMST->line[25] = -1;
+		globalMST->line[26] = 0; globalMST->line[27] = -1; globalMST->line[28] = -1;  globalMST->line[29] = 0;
+		globalMST->line[30] = -1; globalMST->line[31] = -1; globalMST->line[32] = 0;
+		globalMST->line[33] = -1; globalMST->line[34] = -1;
+		globalMST->line[35] = -1;
 		int budget = 0;
 		printf("\n\n=================================================================================\n\n");
 		printf("\t\t  ** A ***");
@@ -195,19 +181,30 @@ void printMapMST(int randNum) {
 		printf("\t\t\t\t\tI");
 		printf("\n\n=================================================================================\n\n");
 		for (int i = 0; type0[i] != '\0'; i++) {
-			putchar(type0[i]);  // 한 글자씩 출력
-			Sleep(30);  // 30 밀리초 대기
+			putchar(type0[i]);
+			Sleep(30);
 		}
 		printf("\n");
 
-		randomline(mst1);
-		lineWeight(mst1);
-		budget = findMST(mst1);
+		randomline(globalMST);
+		lineWeight(globalMST);
+		budget = findMST(globalMST);
 		printf("예산 : %d억원\n", budget);
-		selectMST(mst1, budget);
+		selectMST(globalMST, budget);
 		Sleep(800);
 	}
 	if (randNum == 2) {
+		globalMST->node = 10; globalMST->lineSize = 12; globalMST->fullLine = 45;
+		//제 2 MST 간선 유무
+		globalMST->line[0] = 0; globalMST->line[1] = 0; globalMST->line[2] = -1; globalMST->line[3] = -1; globalMST->line[4] = -1; globalMST->line[5] = -1; globalMST->line[6] = -1; globalMST->line[7] = -1; globalMST->line[8] = -1;
+		globalMST->line[9] = -1; globalMST->line[10] = 0; globalMST->line[11] = -1; globalMST->line[12] = -1; globalMST->line[13] = -1; globalMST->line[14] = -1; globalMST->line[15] = -1; globalMST->line[16] = -1;
+		globalMST->line[17] = 0; globalMST->line[18] = -1; globalMST->line[19] = 0; globalMST->line[20] = -1; globalMST->line[21] = -1; globalMST->line[22] = -1; globalMST->line[23] = -1;
+		globalMST->line[24] = 0; globalMST->line[25] = -1; globalMST->line[26] = 0; globalMST->line[27] = -1; globalMST->line[28] = -1; globalMST->line[29] = -1;
+		globalMST->line[30] = -1; globalMST->line[31] = -1; globalMST->line[32] = -1; globalMST->line[33] = -1; globalMST->line[34] = -1;
+		globalMST->line[35] = 0; globalMST->line[36] = -1; globalMST->line[37] = -1; globalMST->line[38] = -1;
+		globalMST->line[39] = 0; globalMST->line[40] = 0; globalMST->line[41] = -1;
+		globalMST->line[42] = -1; globalMST->line[43] = 0;
+		globalMST->line[44] = 0;
 		int budget = 0;
 		printf("\n\n=================================================================================\n\n");
 		printf("\t\t    A ***** B\n");
@@ -228,19 +225,32 @@ void printMapMST(int randNum) {
 		printf("\t\t                     I **\n");
 		printf("\n\n=================================================================================\n\n");
 		for (int i = 0; type0[i] != '\0'; i++) {
-			putchar(type0[i]);  // 한 글자씩 출력
-			Sleep(30);  // 30 밀리초 대기
+			putchar(type0[i]);
+			Sleep(30);
 		}
 		printf("\n");
 
-		randomline(mst2);
-		lineWeight(mst2);
-		budget = findMST(mst2);
+		randomline(globalMST);
+		lineWeight(globalMST);
+		budget = findMST(globalMST);
 		printf("예산 : %d억원\n", budget);
-		selectMST(mst2, budget);
+		selectMST(globalMST, budget);
 		Sleep(800);
 	}
 	if (randNum == 3) {
+		//제 3 MST 간선 유무
+		globalMST->node = 11; globalMST->lineSize = 20; globalMST->fullLine = 55;
+		globalMST->line[0] = 0; globalMST->line[1] = 0; globalMST->line[2] = -1; globalMST->line[3] = -1; globalMST->line[4] = -1; globalMST->line[5] = -1; globalMST->line[6] = -1; globalMST->line[7] = -1; globalMST->line[8] = -1; globalMST->line[9] = -1;
+		globalMST->line[10] = 0; globalMST->line[11] = 0; globalMST->line[12] = -1; globalMST->line[13] = -1; globalMST->line[14] = -1; globalMST->line[15] = -1; globalMST->line[16] = -1; globalMST->line[17] = -1; globalMST->line[18] = -1;
+		globalMST->line[19] = 0; globalMST->line[20] = 0; globalMST->line[21] = 0; globalMST->line[22] = -1; globalMST->line[23] = -1; globalMST->line[24] = -1; globalMST->line[25] = -1; globalMST->line[26] = -1;
+		globalMST->line[27] = 0; globalMST->line[28] = -1; globalMST->line[29] = 0; globalMST->line[30] = -1; globalMST->line[31] = -1; globalMST->line[32] = -1; globalMST->line[33] = 0;
+		globalMST->line[34] = 0; globalMST->line[35] = -1; globalMST->line[36] = -1; globalMST->line[37] = -1; globalMST->line[38] = 0; globalMST->line[39] = 0;
+		globalMST->line[40] = -1; globalMST->line[41] = 0; globalMST->line[42] = -1; globalMST->line[43] = 0; globalMST->line[44] = -1;
+		globalMST->line[45] = -1; globalMST->line[46] = 0; globalMST->line[47] = -1; globalMST->line[48] = 0;
+		globalMST->line[49] = -1; globalMST->line[50] = 0; globalMST->line[51] = -1;
+		globalMST->line[52] = -1; globalMST->line[53] = 0;
+		globalMST->line[54] = 0;
+
 		int budget = 0;
 		printf("\n\n=================================================================================\n\n");
 		printf("\t\t          A    \n");
@@ -258,17 +268,21 @@ void printMapMST(int randNum) {
 		printf("\t           I         *** J ***\n");
 		printf("\n\n=================================================================================\n\n");
 		for (int i = 0; type0[i] != '\0'; i++) {
-			putchar(type0[i]);  // 한 글자씩 출력
-			Sleep(30);  // 30 밀리초 대기
+			putchar(type0[i]);
+			Sleep(30);
 		}
 		printf("\n");
 
-		randomline(mst3);
-		lineWeight(mst3);
-		budget = findMST(mst3);
+		randomline(globalMST);
+		lineWeight(globalMST);
+		budget = findMST(globalMST);
 		printf("예산 : %d억원\n", budget);
-		selectMST(mst3, budget);
+		selectMST(globalMST, budget);
 		Sleep(800);
+	}
+	if (globalMST != NULL) {
+		free(globalMST);
+		globalMST = NULL;
 	}
 }
 
@@ -282,7 +296,6 @@ void randomline(MST* mst) {
 		if (mst->line[i] == 0) {
 
 			mst->line[i] = rand() % 10 + 10;
-			//printf("[%d] : %d\n",i, mst->line[i]);
 
 		}
 		else if (mst->line[i] == -1) {
@@ -298,7 +311,7 @@ void lineWeight(MST* mst) {
 	for (i = 0; i < mst->node - 1; i++) {
 		for (j = i + 1; j < mst->node; j++) {
 			if (mst->line[x] != -1) {
-				printf("[%2d] 도로 %c - %c 건설 시 예산 : %d억\n", x, i + 'A', j + 'A', mst->line[x]);
+				printf("[%2d]번 도로 %c - %c 건설 시 예산 : %d억\n", x, i + 'A', j + 'A', mst->line[x]);
 			}
 			x++;
 		}
@@ -312,12 +325,12 @@ void selectMST(MST* mst, int budget) {
 	int num[LINESIZE] = { 0 }, num2[LINESIZE] = { 0 };
 	int pass_fail = 0;
 
-	printf("\n어느 마을에서 다른 모든 마을로 갈 수 있도록 크러스컬 알고리즘을 사용하여 제한된 예산으로 도로를 건설하시오.\n");
+	printf("\n어느 마을에서 다른 모든 마을로 갈 수 있도록 제한된 예산으로 도로를 건설하시오.\n");
 
 	for (i = 0; i < mst->node - 1; i++) {
 		for (j = i + 1; j < mst->node; j++) {
 			if (mst->line[x] != -1) {
-				printf("%c - %c : %d번 도로\n", i + 'A', j + 'A', x);
+				//printf("%c - %c : %d번 도로\n", i + 'A', j + 'A', x);
 			}
 			x++;
 		}
@@ -334,7 +347,7 @@ void selectMST(MST* mst, int budget) {
 re:
 	i = 0;
 	while (1) {
-		printf("건설할 도로의 번호를 입력(-1 입력시 도로를 건설) : ");
+		printf("건설할 도로의 번호를 입력 후 엔터(-1 입력시 선택한 모든 도로 선택 확정) : ");
 		scanf_s("%d", &num[i]);
 		if (num[i] == -1) {
 			break;
@@ -390,10 +403,10 @@ int findMST(MST* mst) {
 	graph->vertices = mst->node;	//점의 개수 옮김
 	graph->edges = mst->fullLine;	//존재하지 않는 간선 + 존재하는 간선 개수 옮김
 
-	for (int i = 0; i < mst->node; ++i) {
+	for (int i = 0; i < mst->node - 1; ++i) {
 		for (int j = i + 1; j < mst->node; ++j) {
 			int weight;
-			weight = mst->line[i - 1];
+			weight = mst->line[i];
 			if (weight != -1) {
 				graph->edge[edges].src = i;
 				graph->edge[edges].dest = j;
