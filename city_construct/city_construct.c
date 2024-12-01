@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include "MST.h"
 
-#define LINESIZE 50
+#define LINESIZE 200
 #define MAX_VERTICES 100
 #define INF 100000000	//무한을 의미
 #define NONE_ -1	//존재하지 않음을 의미
@@ -36,7 +36,7 @@ int numEquals(int num[], int budget, int num2[], MST* mst);
 
 int main(void) {
 	intro();	//인트로 스토리 출력 함수
-	printf("\n도로 건설에 실패하셨습니다...\n당신의 최고 달성 스테이지: %d", max_stage);
+	printf("\n너무 많은 실패로 해고 되었습니다...\n\n당신의 최고 달성 스테이지: %d\n", max_stage);
 	return 0;
 }
 
@@ -134,7 +134,7 @@ void storyPrint(const char* text) {
 //어떤 맵을 사용할 지 결정하는 함수 (맵 추가되면 숫자 범위 바꾸기)
 int randomMap(void) {
 	srand(time(NULL));
-	int randomNum = rand() % 3 + 1;
+	int randomNum = rand() % 4 + 1;
 	return randomNum;
 }
 
@@ -280,6 +280,53 @@ void printMapMST(int randNum) {
 		selectMST(globalMST, budget);
 		Sleep(800);
 	}
+	if (randNum == 4) {
+		//globalMST 간선 유무(0은 존재하며 초기화할 예정, -1은 존재하지 않음)
+		globalMST->node = 13; globalMST->lineSize = 24; globalMST->fullLine = 78;
+		globalMST->line[0] = 0; globalMST->line[1] = 0; globalMST->line[2] = -1; globalMST->line[3] = -1; globalMST->line[4] = -1; globalMST->line[5] = -1; globalMST->line[6] = -1; globalMST->line[7] = -1; globalMST->line[8] = -1; globalMST->line[9] = -1; globalMST->line[10] = -1; globalMST->line[11] = -1;
+		globalMST->line[12] = 0; globalMST->line[13] = -1; globalMST->line[14] = 0; globalMST->line[15] = -1; globalMST->line[16] = -1; globalMST->line[17] = -1; globalMST->line[18] = -1; globalMST->line[19] = -1; globalMST->line[20] = -1; globalMST->line[21] = -1; globalMST->line[22] = -1;
+		globalMST->line[23] = 0; globalMST->line[24] = -1; globalMST->line[25] = 0; globalMST->line[26] = -1; globalMST->line[27] = -1; globalMST->line[28] = -1; globalMST->line[29] = -1; globalMST->line[30] = -1; globalMST->line[31] = -1; globalMST->line[32] = -1;
+		globalMST->line[33] = -1; globalMST->line[34] = 0; globalMST->line[35] = 0; globalMST->line[36] = -1; globalMST->line[37] = -1; globalMST->line[38] = -1; globalMST->line[39] = -1; globalMST->line[40] = -1; globalMST->line[41] = -1;
+		globalMST->line[42] = 0; globalMST->line[43] = -1; globalMST->line[44] = 0; globalMST->line[45] = 0; globalMST->line[46] = -1; globalMST->line[47] = -1; globalMST->line[48] = -1; globalMST->line[49] = -1;
+		globalMST->line[50] = 0; globalMST->line[51] = -1; globalMST->line[52] = 0; globalMST->line[53] = 0; globalMST->line[54] = -1; globalMST->line[55] = -1; globalMST->line[56] = -1;
+		globalMST->line[57] = -1; globalMST->line[58] = -1; globalMST->line[59] = 0; globalMST->line[60] = 0; globalMST->line[61] = -1; globalMST->line[62] = -1;
+		globalMST->line[63] = 0; globalMST->line[64] = -1; globalMST->line[65] = -1; globalMST->line[66] = 0; globalMST->line[67] = -1;
+		globalMST->line[68] = 0; globalMST->line[69] = -1; globalMST->line[70] = 0; globalMST->line[71] = 0;
+		globalMST->line[72] = 0; globalMST->line[73] = -1; globalMST->line[74] = 0;
+		globalMST->line[75] = -1; globalMST->line[76] = -1;
+		globalMST->line[77] = 0;
+
+		int budget = 0;
+		printf("\n\n=================================================================================\n\n");
+		printf("\t\t       A    \n");
+		printf("\t\t      * *    \n");
+		printf("\t\t     *   *     \n");
+		printf("\t\t    B *** C *** D\n");
+		printf("\t\t   *       *   *  * \n");
+		printf("\t\t  *         * *      * \n");
+		printf("\t\t E ********* F ******* G\n");
+		printf("\t\t * *        * *      * * \n");
+		printf("\t\t *   *     *   *    *  * \n");
+		printf("\t\t *     *  *     *  *   * \n");
+		printf("\t\t H ***** I ****** J ** K\n");
+		printf("\t\t  *     * *     * \n");
+		printf("\t\t   *  *     *  *  \n");
+		printf("\t\t    L ******* M      \n");
+		printf("\n\n=================================================================================\n\n");
+
+		for (int i = 0; type0[i] != '\0'; i++) {
+			putchar(type0[i]);
+			Sleep(30);
+		}
+		printf("\n");
+
+		randomline(globalMST);
+		lineWeight(globalMST);
+		budget = findMST(globalMST);
+		printf("예산 : %d억원\n", budget);
+		selectMST(globalMST, budget);
+		Sleep(800);
+	}
 	if (globalMST != NULL) {
 		free(globalMST);
 		globalMST = NULL;
@@ -375,7 +422,7 @@ int numEquals(int num[], int budget, int num2[], MST* mst) {
 		}
 		sum += mst->line[num[i]];
 	}
-	printf("%d억원 사용, 예산 : %d\n", sum, budget);
+	printf("%d억원 사용, 예산 : %d억원\n", sum, budget);
 	if (budget == sum) {
 		printf("주어진 예산으로 적절하게 도로를 건설하였습니다.\n");
 		return 0;
