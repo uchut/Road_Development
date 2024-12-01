@@ -38,10 +38,15 @@ int main(void) {
 	while(1) {
 		int isRePlay = 0;
 		intro();	//인트로 스토리 출력 함수
-		printf("\n너무 많은 실패로 해고 되었습니다...\n\n당신의 최고 달성 스테이지: %d\n", max_stage);
+		printf("\n너무 많은 실패로 해고 되었습니다...\n\n당신의 최고 달성 스테이지: %d\n\n", max_stage);
 		printf("다시 도전 하시겠습니까?(도전하려면 1을 입력, 프로그램 종료하려면 0 입력): ");
 		scanf_s("%d", &isRePlay);
-		if (isRePlay == 1) continue;
+		if (isRePlay == 1) {
+			system("cls");
+			heart = 3;
+			max_stage = 0;
+			continue;
+		}
 		else if (isRePlay == 0) break;
 	}
 	return 0;
